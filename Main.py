@@ -1,3 +1,4 @@
+import math
 import os.path
 import GreedySearchImp
 from KnapsackObj import Knapsack
@@ -49,6 +50,16 @@ def greedy_search(knapsacks: list[GreedySearchImp]):
     for knapsack in knapsacks:
         GreedySearchImp.greedy_search(knapsack)
         knapsack.find_best()
+    get_greedy_accurate_percent(KnapsacksData)
+
+
+def get_greedy_accurate_percent(knapsacks: list[GreedySearchImp]):
+    result = 0
+    length = len(knapsacks)
+    for knapsack in knapsacks:
+        if knapsack.if_best(knapsack.get_greedy_value()):
+            result += 1
+    print(round(result/length, 4) * 100, "%")
 
 
 if __name__ == "__main__":
