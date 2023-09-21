@@ -1,37 +1,11 @@
 import os.path
+import GreedySearchImp
+from KnapsackObj import Knapsack
+
+KnapsacksData = []
 
 
-class Knapsack:
-    weights = []
-    prices = []
-    capacity = -1
-    best_result = []
-    best_value = -1
-    __result = []
-    __value = -1
-
-    def __init__(self, weights: list, prices: list, capacity: int, best_result: list, best_value: float):
-        self.weights = weights
-        self.prices = prices
-        self.capacity = capacity
-        self.best_result = best_result
-        self.best_value = best_value
-
-    def set_result(self, result: list):
-        self.__result = result
-
-    def get_result(self):
-        return self.__result
-
-    def set_value(self, value: float):
-        self.__value = value
-
-    def get_value(self):
-        return self.__value
-
-
-def read_file(file_name: str):
-    knapsacks = []
+def read_file(file_name: str) -> bool:
     if os.path.isfile(file_name):
         with open(file_name, 'r', encoding='utf-8') as file:
             data = file.readlines()
@@ -44,7 +18,7 @@ def read_file(file_name: str):
             price_str = line_list[1].strip().replace("[", "").replace("]", "")
             capacity_str = line_list[2].strip()
             if line_list[3].strip() == "":
-                best_result_str = ""
+                best_result_str = "0"
             else:
                 best_result_str = line_list[3].strip().replace("[", "").replace("]", "")
             best_value_str = line_list[4].strip()
@@ -55,11 +29,11 @@ def read_file(file_name: str):
             capacity = int(capacity_str)
             best_value = float(best_value_str)
             if len(weight_list) != len(price_list) != len(best_result_list):
-                print("Inconsistent list length at line %d: %s " % ((i + 1), line_list))
+                print("Inconsistent list lengths at line %d: %s " % ((i + 1), line_list))
                 continue
             new_data = Knapsack(weight_list, price_list, capacity, best_result_list, best_value)
-            knapsacks.append(new_data)
-    return knapsacks
+            KnapsacksData.append(new_data)
+    return True
 
 
 def str_to_list(data: str) -> list:
@@ -71,5 +45,12 @@ def str_to_list(data: str) -> list:
     return result
 
 
+def greedy_search(knapsacks: list[GreedySearchImp]):
+    for knapsack in knapsacks:
+        GreedySearchImp.greedy_search(knapsack)
+        knapsack.find_best()
+
+
 if __name__ == "__main__":
-    print(read_file("knapsack_5_items.csv"))
+    read_file("knapsack_5_items.csv")
+    greedy_search(KnapsacksData)
