@@ -5,11 +5,7 @@ def greedy_search(knapsack: KnapsackObj) -> bool:
     weights = knapsack.weights
     prices = knapsack.prices
     capacity = knapsack.capacity
-    values = []
-
-    for i in range(knapsack.length):
-        values.append((prices[i] / weights[i], i))
-    values.sort(key=get_sort_key, reverse=False)
+    values = knapsack.get_value_list()
     result = [0]*knapsack.length
     total_price = 0
     total_price = __callback(weights, prices, values, result, total_price, capacity)
@@ -32,10 +28,6 @@ def __callback(weights: list, prices: list, values: list, result: list, total_pr
         capacity -= weight
         total_price = __callback(weights, prices, values, result, price, capacity)
     return total_price
-
-
-def get_sort_key(elem):
-    return elem[0]
 
 
 if __name__ == "__main__":

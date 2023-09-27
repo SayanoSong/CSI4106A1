@@ -32,6 +32,13 @@ class Knapsack:
     def if_best(self, value):
         return value >= self.best_value
 
+    def get_value_list(self) -> list[(int, int)]:
+        values = []
+        for i in range(self.length):
+            values.append((self.prices[i] / self.weights[i], i))
+        values.sort(key=get_sort_key, reverse=False)
+        return values
+
     def find_best(self):
         found = False
         if self.if_best(self.__greedy_value):
@@ -46,3 +53,7 @@ class Knapsack:
             print("No search method found the best result. \n")
         '''
         return found
+
+
+def get_sort_key(elem):
+    return elem[0]
